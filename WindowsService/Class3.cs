@@ -4,19 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication
+namespace WindowsService
 {
-    class Program
+    class Class3
     {
-        private static Email.Net.Imap.ImapClient client;
+        private Email.Net.Imap.ImapClient client;
 
-        static void Main(string[] args)
-        {
-            AuthenticateWithImapServer();
-            RetrieveMessagesFromImapServer();
-        }
-
-        private static void AuthenticateWithImapServer()
+        private void AuthenticateWithImapServer()
         {
             client = new Email.Net.Imap.ImapClient();
 
@@ -29,9 +23,9 @@ namespace ConsoleApplication
             //TCP port for connection
             client.Port = (ushort)993;
             //Username to login to the IMAP server
-            client.Username = "test@shaunluttin.com";
+            client.Username = "admin@shaunluttin.com";
             //Password to login to the IMAP server
-            client.Password = "password";
+            client.Password = "eP6249*K6@";
             //Interaction type
             client.SSLInteractionType = Email.Net.Common.Configurations.EInteractionType.SSLPort;
             //Login to the server
@@ -46,7 +40,7 @@ namespace ConsoleApplication
             }
         }
 
-        private static void RetrieveMessagesFromImapServer()
+        private void RetrieveMessagesFromImapServer()
         {
             // Retrieve Messages
             // ------------------------
@@ -63,7 +57,7 @@ namespace ConsoleApplication
             WriteToLogFile(string.Format("You have {0} unread messages.", unseenMessageCount.ToString()));
         }
 
-        private static void WriteToLogFile(string message)
+        private void WriteToLogFile(string message)
         {
             using (System.IO.StreamWriter outfile = new System.IO.StreamWriter("log.txt"))
             {

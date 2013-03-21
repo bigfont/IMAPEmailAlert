@@ -2,22 +2,25 @@
 using System.Configuration.Install;
 using System.ServiceProcess;
 
-[RunInstaller(true)]
-public class MyServiceInstaller : Installer
+namespace WindowsService
 {
-    private ServiceProcessInstaller processInstaller;
-    private ServiceInstaller serviceInstaller;
-
-    public MyServiceInstaller()
+    [RunInstaller(true)]
+    public class MyServiceInstaller : Installer
     {
-        processInstaller = new ServiceProcessInstaller();
-        serviceInstaller = new ServiceInstaller();
+        private ServiceProcessInstaller processInstaller;
+        private ServiceInstaller serviceInstaller;
 
-        processInstaller.Account = ServiceAccount.LocalSystem;
-        serviceInstaller.StartType = ServiceStartMode.Manual;
-        serviceInstaller.ServiceName = "MyService"; //must match MyServiceInstaller.ServiceName
+        public MyServiceInstaller()
+        {
+            processInstaller = new ServiceProcessInstaller();
+            serviceInstaller = new ServiceInstaller();
 
-        Installers.Add(serviceInstaller);
-        Installers.Add(processInstaller);
+            processInstaller.Account = ServiceAccount.LocalSystem;
+            serviceInstaller.StartType = ServiceStartMode.Manual;
+            serviceInstaller.ServiceName = "MyService"; //must match MyServiceInstaller.ServiceName
+
+            Installers.Add(serviceInstaller);
+            Installers.Add(processInstaller);
+        }
     }
 }

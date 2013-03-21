@@ -35,6 +35,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Email.NET">
+      <HintPath>..\References\Email.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.ServiceProcess" />
@@ -46,6 +49,7 @@
     <Compile Include="Class2.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Class3.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
