@@ -2,7 +2,7 @@
 using System.Configuration.Install;
 using System.ServiceProcess;
 
-namespace WindowsService
+namespace EmailAlertService
 {
     [RunInstaller(true)]
     public class MyServiceInstaller : Installer
@@ -17,7 +17,7 @@ namespace WindowsService
 
             processInstaller.Account = ServiceAccount.LocalSystem;
             serviceInstaller.StartType = ServiceStartMode.Manual;
-            serviceInstaller.ServiceName = "MyService"; //must match MyServiceInstaller.ServiceName
+            serviceInstaller.ServiceName = "EmailAlertService"; //must match MyServiceInstaller.ServiceName
 
             Installers.Add(serviceInstaller);
             Installers.Add(processInstaller);

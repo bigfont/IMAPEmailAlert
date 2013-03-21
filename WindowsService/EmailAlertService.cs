@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsService
+namespace EmailAlertService
 {
     public class UserService : System.ServiceProcess.ServiceBase
     {
@@ -21,7 +21,15 @@ namespace WindowsService
         }
         protected override void OnStart(string[] args)
         {
-            // TODO: add startup stuff
+            try {
+                EmailAlertClassLibrary.ImapAndSmtp imapAndSmtp = new EmailAlertClassLibrary.ImapAndSmtp();
+                imapAndSmtp.CountEmailsAndSendAlert();
+            }
+            catch(Exception ex)
+            {
+                string message = ex.Message;
+            }
+
         }
         protected override void OnStop()
         {

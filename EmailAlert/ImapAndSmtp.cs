@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication
+namespace EmailAlertClassLibrary
 {
-    static class Program
+    public class ImapAndSmtp
     {
-        private static void Main(string[] args)
+        public void CountEmailsAndSendAlert()
         {
             Email.Net.Imap.ImapClient client;
             Email.Net.Imap.Collections.MessageCollection messageCollection;
             int unseenMessageCount;
-            
+
             client = CreateImapClient();
             if (AuthenticateImapClientWithImapServer(client))
             {
@@ -22,7 +22,7 @@ namespace ConsoleApplication
                 SendAlertEmailToUsersSecondaryEmailAccount(unseenMessageCount);
             }
         }
-        private static Email.Net.Imap.ImapClient CreateImapClient()
+        private Email.Net.Imap.ImapClient CreateImapClient()
         {
             Email.Net.Imap.ImapClient client;
             client = new Email.Net.Imap.ImapClient();
@@ -41,24 +41,22 @@ namespace ConsoleApplication
 
             return client;
         }
-        private static bool AuthenticateImapClientWithImapServer(Email.Net.Imap.ImapClient client)
+        private bool AuthenticateImapClientWithImapServer(Email.Net.Imap.ImapClient client)
         {
             //Login to the server
             bool loginSuccess;
             Email.Net.Imap.Responses.CompletionResponse response = (Email.Net.Imap.Responses.CompletionResponse)client.Login();
             if (response.CompletionResult == Email.Net.Imap.Responses.ECompletionResponseType.OK)
             {
-                loginSuccess = true;
-                WriteToLogFile("Login succeeded.");
+                loginSuccess = true;                
             }
             else
             {
-                loginSuccess = false;
-                WriteToLogFile("Login failed.");
+                loginSuccess = false;                
             }
             return loginSuccess;
         }
-        private static Email.Net.Imap.Collections.MessageCollection RetrieveMessagesFromImapServer(Email.Net.Imap.ImapClient client)
+        private Email.Net.Imap.Collections.MessageCollection RetrieveMessagesFromImapServer(Email.Net.Imap.ImapClient client)
         {
             // Retrieve Messages
             // ------------------------
@@ -71,7 +69,7 @@ namespace ConsoleApplication
 
             return messageCollection;
         }
-        private static int CountUnseenMessages(Email.Net.Imap.Collections.MessageCollection messageCollection)
+        private int CountUnseenMessages(Email.Net.Imap.Collections.MessageCollection messageCollection)
         { 
             int unseenMessageCount = messageCollection.Count(e =>
             {
@@ -79,7 +77,7 @@ namespace ConsoleApplication
             });
             return unseenMessageCount;            
         }
-        private static void SendAlertEmailToUsersSecondaryEmailAccount(int unseenMessageCount)
+        private void SendAlertEmailToUsersSecondaryEmailAccount(int unseenMessageCount)
         {
             StringBuilder stringBuilder;
             System.Net.Mail.SmtpClient smtp;
@@ -87,7 +85,6 @@ namespace ConsoleApplication
 
             stringBuilder = new StringBuilder();
             stringBuilder.AppendFormat("You have {0} unread messages.", unseenMessageCount.ToString());
-            WriteToLogFile(stringBuilder.ToString());
 
             smtp = new System.Net.Mail.SmtpClient();
             mailMessage= new System.Net.Mail.MailMessage();;
@@ -98,13 +95,6 @@ namespace ConsoleApplication
             mailMessage.Subject = stringBuilder.ToString();
             mailMessage.Body = stringBuilder.ToString();       
             smtp.Send(mailMessage);
-        }
-        private static void WriteToLogFile(string message)
-        {
-            using (System.IO.StreamWriter outfile = new System.IO.StreamWriter("log.txt"))
-            {
-                outfile.Write(message);
-            }
         }
     }
 }

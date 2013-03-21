@@ -7,8 +7,8 @@
     <ProjectGuid>{6F92351E-B502-4500-BB1B-58FE4331ED16}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WindowsService</RootNamespace>
-    <AssemblyName>WindowsService</AssemblyName>
+    <RootNamespace>EmailAlertService</RootNamespace>
+    <AssemblyName>EmailAlertService</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,8 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Smtp.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Smtp.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Email.NET">
@@ -44,13 +49,18 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs">
+    <Compile Include="EmailAlertService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Class2.cs">
+    <Compile Include="EmailAlertServiceInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Class3.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EmailAlert\EmailAlert.csproj">
+      <Project>{fb801337-e6cb-4cf6-b3d7-ac44b9738185}</Project>
+      <Name>EmailAlert</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
