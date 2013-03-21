@@ -4,21 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class UserService1 : System.ServiceProcess.ServiceBase
+public class UserService : System.ServiceProcess.ServiceBase
 {
     public static void Main()
     {
-        System.ServiceProcess.ServiceBase.Run(new UserService1());
+        System.ServiceProcess.ServiceBase.Run(new UserService());
     }
-    public UserService1()
+    public UserService()
     {
-        this.ServiceName = "MyService2";
+        this.ServiceName = "MyService";
         this.CanStop = true;
         this.CanPauseAndContinue = true;
         this.AutoLog = true;
     }
     protected override void OnStart(string[] args)
     {
-        // Insert code here to define processing.
+        // TODO: add startup stuff
+    }
+    protected override void OnStop()
+    {
+        // TODO: add shutdown stuff
     }
 }
