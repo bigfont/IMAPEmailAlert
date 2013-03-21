@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Smtp.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Email.NET">
