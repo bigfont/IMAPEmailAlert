@@ -14,7 +14,7 @@ namespace EmailAlertTask
             {
                 EmailAlertClassLibrary.ImapAndSmtp imapAndSmtp = new EmailAlertClassLibrary.ImapAndSmtp();
                 imapAndSmtp.CountEmailsAndSendAlert("test@shaunluttin.com", "4Wn2!XKfJF", "admin@shaunluttin.com");
-                // imapAndSmtp.CountEmailsAndSendAlert("chair@innovativecommunities.org", "richmond1984", "john@humanhorizons.net");
+                imapAndSmtp.CountEmailsAndSendAlert("chair@innovativecommunities.org", "richmond1984", "john@humanhorizons.net");
             }
             catch (Exception ex)
             {
