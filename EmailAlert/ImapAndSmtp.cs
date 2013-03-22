@@ -8,21 +8,24 @@ namespace EmailAlertClassLibrary
 {
     public class ImapAndSmtp
     {
-        public void CountEmailsAndSendAlert()
+        public void CountEmailsAndSendAlert(string icoEmail, string icoPassword, string secondaryEmail)
         {
             Email.Net.Imap.ImapClient client;
             Email.Net.Imap.Collections.MessageCollection messageCollection;
             int unseenMessageCount;
 
-            client = CreateImapClient();
+            client = CreateImapClient(icoEmail, icoPassword);
             if (AuthenticateImapClientWithImapServer(client))
             {
                 messageCollection = RetrieveMessagesFromImapServer(client);
                 unseenMessageCount = CountUnseenMessages(messageCollection);
-                SendAlertEmailToUsersSecondaryEmailAccount(unseenMessageCount);
+                if (unseenMessageCount > 0)
+                {
+                    SendAlertEmailToUsersSecondaryEmailAccount(secondaryEmail);
+                }
             }
         }
-        private Email.Net.Imap.ImapClient CreateImapClient()
+        private Email.Net.Imap.ImapClient CreateImapClient(string icoEmail, string icoPassword)
         {
             Email.Net.Imap.ImapClient client;
             client = new Email.Net.Imap.ImapClient();
@@ -33,9 +36,9 @@ namespace EmailAlertClassLibrary
             //TCP port for connection
             client.Port = (ushort)993;
             //Username to login to the IMAP server
-            client.Username = "test@shaunluttin.com";
+            client.Username = icoEmail;
             //Password to login to the IMAP server
-            client.Password = "4Wn2!XKfJF";
+            client.Password = icoPassword;
             //Interaction type
             client.SSLInteractionType = Email.Net.Common.Configurations.EInteractionType.SSLPort;
 
@@ -48,11 +51,11 @@ namespace EmailAlertClassLibrary
             Email.Net.Imap.Responses.CompletionResponse response = (Email.Net.Imap.Responses.CompletionResponse)client.Login();
             if (response.CompletionResult == Email.Net.Imap.Responses.ECompletionResponseType.OK)
             {
-                loginSuccess = true;                
+                loginSuccess = true;
             }
             else
             {
-                loginSuccess = false;                
+                loginSuccess = false;
             }
             return loginSuccess;
         }
@@ -70,30 +73,39 @@ namespace EmailAlertClassLibrary
             return messageCollection;
         }
         private int CountUnseenMessages(Email.Net.Imap.Collections.MessageCollection messageCollection)
-        { 
+        {
             int unseenMessageCount = messageCollection.Count(e =>
             {
                 return (!e.Flags.Contains(Email.Net.Imap.EFlag.Seen));
             });
-            return unseenMessageCount;            
+            return unseenMessageCount;
         }
-        private void SendAlertEmailToUsersSecondaryEmailAccount(int unseenMessageCount)
+        private void SendAlertEmailToUsersSecondaryEmailAccount(string secondaryEmail)
         {
-            StringBuilder stringBuilder;
+            StringBuilder subjectStringBuilder;
+            StringBuilder bodyStringBuilder;
             System.Net.Mail.SmtpClient smtp;
             System.Net.Mail.MailMessage mailMessage;
 
-            stringBuilder = new StringBuilder();
-            stringBuilder.AppendFormat("You have {0} unread messages.", unseenMessageCount.ToString());
+            subjectStringBuilder = new StringBuilder();
+            subjectStringBuilder.AppendFormat("You have new mail in the watercooler!");
 
-            smtp = new System.Net.Mail.SmtpClient();
-            mailMessage= new System.Net.Mail.MailMessage();;
+            bodyStringBuilder = new StringBuilder();
+            bodyStringBuilder.Append("<p>Hi there,</p>");
+            bodyStringBuilder.Append("<p>Login to the <a href='http://www.icooo.org'>Watercooler</a> to check your messages.<p/>");
+            bodyStringBuilder.Append("<p>Cheers,</p>");
+            bodyStringBuilder.Append("<p>Postmaster</p>");
+            bodyStringBuilder.Append("<p># PLEASE REPLY TO EMAILS WITHIN 48 HOURS.<p/>");
+            bodyStringBuilder.Append("<p># PLEASE USE ONLY ICO ADDRESSES WHEN E-MAILING ICO TEAM MEMBERS.<p/>");
 
             // In addition to the web.configuration.system.net.mailSettings, 
-            // the following is the only code needed to send an email with SendGrid.            
-            mailMessage.To.Add("admin@shaunluttin.com");
-            mailMessage.Subject = stringBuilder.ToString();
-            mailMessage.Body = stringBuilder.ToString();       
+            // the following is the only code needed to send an email with SendGrid. 
+            smtp = new System.Net.Mail.SmtpClient();
+            mailMessage = new System.Net.Mail.MailMessage(); ;           
+            mailMessage.To.Add(secondaryEmail);
+            mailMessage.Subject = subjectStringBuilder.ToString();
+            mailMessage.Body = bodyStringBuilder.ToString();
+            mailMessage.IsBodyHtml = true;
             smtp.Send(mailMessage);
         }
     }
