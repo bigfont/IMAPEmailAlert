@@ -3,6 +3,7 @@
 #################
 
 Smtp.config
+PrivateUserData.txt
 
 #################
 ## Visual Studio
