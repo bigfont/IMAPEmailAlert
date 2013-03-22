@@ -35,7 +35,7 @@ namespace EmailAlertClassLibrary
             //Username to login to the IMAP server
             client.Username = "test@shaunluttin.com";
             //Password to login to the IMAP server
-            client.Password = "password";
+            client.Password = "4Wn2!XKfJF";
             //Interaction type
             client.SSLInteractionType = Email.Net.Common.Configurations.EInteractionType.SSLPort;
 

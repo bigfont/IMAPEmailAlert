@@ -9,7 +9,7 @@ namespace EmailAlertTask
     class EmailAlertTask
     {
         static void Main(string[] args)
-        {
+        {            
             try
             {
                 EmailAlertClassLibrary.ImapAndSmtp imapAndSmtp = new EmailAlertClassLibrary.ImapAndSmtp();
